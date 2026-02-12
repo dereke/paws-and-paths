@@ -34,8 +34,9 @@
             justify-content: space-between;
             padding: 1.5rem !important;
             border-radius: 1.5rem !important;
-            min-height: 380px;
+            min-height: 360px;
             overflow: hidden;
+            cursor: pointer;
         }
 
         .premium-card:hover {
@@ -47,7 +48,9 @@
         .diamond-mogul-card {
             background: linear-gradient(145deg, #1e1b4b 0%, #020617 100%) !important;
             border: 2px solid rgba(234, 179, 8, 0.8) !important;
-            box-shadow: 0 0 40px rgba(234, 179, 8, 0.15);
+            box-shadow: 0 0 40px rgba(234, 179, 8, 0.2);
+            transform: scale(1.02);
+            z-index: 10;
         }
 
         .diamond-mogul-card::before {
@@ -56,7 +59,7 @@
             inset: 0;
             background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23FFFFFF' d='M100 0L110 90L200 100L110 110L100 200L90 110L0 100L90 90Z'/%3E%3C/svg%3E");
             background-size: 40px 40px;
-            opacity: 0.05;
+            opacity: 0.08;
             animation: sparkle-float 15s linear infinite;
         }
 
@@ -69,8 +72,8 @@
             position: absolute;
             top: 1rem;
             right: 1rem;
-            width: 60px;
-            height: 60px;
+            width: 80px;
+            height: 80px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -81,6 +84,7 @@
             font-size: 2.2rem; 
             opacity: 0.8;
             filter: drop-shadow(0 0 8px currentColor);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .massive-crown-right {
@@ -92,32 +96,71 @@
             opacity: 0.3;
             color: #eab308;
             transform: rotate(15deg);
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* ICON ANIMATIONS */
+        .anim-bounce { animation: iconBounce 0.6s ease; }
+        .anim-sway { animation: iconSway 0.8s ease-in-out; }
+        .anim-spin { animation: iconSpin 0.7s cubic-bezier(0.4, 0, 0.2, 1); }
+        .anim-shake { animation: iconShake 0.5s ease; }
+        .anim-pulse { animation: iconPulse 0.6s ease-out; }
+        .anim-crown { animation: crownGrand 1.2s cubic-bezier(0.17, 0.67, 0.83, 0.67); }
+
+        @keyframes iconBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        @keyframes iconSway {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(15deg); }
+            75% { transform: rotate(-15deg); }
+        }
+        @keyframes iconSpin {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.4); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+        @keyframes iconShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        @keyframes iconPulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.5); opacity: 1; filter: brightness(1.5); }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+        @keyframes crownGrand {
+            0% { transform: rotate(15deg) scale(1); opacity: 0.3; }
+            30% { transform: rotate(0deg) scale(1.3); opacity: 1; filter: drop-shadow(0 0 30px #eab308); }
+            100% { transform: rotate(15deg) scale(1); opacity: 0.3; }
         }
 
         .card-content-offset { 
             margin-top: 0.5rem; 
-            padding-right: 1rem; 
+            padding-right: 0.5rem; 
             z-index: 20;
         }
 
         .availability-badge { 
-            font-size: 0.65rem; 
+            font-size: 0.6rem; 
             text-transform: uppercase; 
             font-weight: 800; 
-            padding: 0.3rem 0.6rem; 
+            padding: 0.25rem 0.5rem; 
             border-radius: 6px; 
             display: inline-block; 
             margin-bottom: 0.75rem; 
         }
 
-        .card-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.25rem; line-height: 1.2; }
+        .card-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.25rem; line-height: 1.2; }
         .card-price { font-size: 1.75rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem; }
         .card-price::before { content: '£'; }
-        .card-desc { font-size: 0.85rem; color: #94a3b8; line-height: 1.5; margin-bottom: 1.5rem; }
+        .card-desc { font-size: 0.8rem; color: #94a3b8; line-height: 1.5; margin-bottom: 1.25rem; flex-grow: 1; }
         
         .card-btn { 
-            font-size: 0.75rem; 
-            padding: 1rem 0.5rem; 
+            font-size: 0.7rem; 
+            padding: 0.85rem 0.5rem; 
             text-transform: uppercase; 
             letter-spacing: 0.1em; 
             font-weight: 700; 
@@ -133,10 +176,27 @@
             text-align: center;
         }
         
-        .responsive-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
-            gap: 1.5rem; 
+        /* DESKTOP 3x3 GRID */
+        @media (min-width: 1024px) {
+            .responsive-grid { 
+                display: grid; 
+                grid-template-columns: repeat(3, 1fr); 
+                gap: 2rem; 
+            }
+        }
+
+        /* MOBILE/TABLET FLEXIBILITY */
+        @media (max-width: 1023px) {
+            .responsive-grid { 
+                display: grid; 
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+                gap: 1.5rem; 
+            }
+        }
+
+        @media (max-width: 640px) {
+            .responsive-grid { grid-template-columns: 1fr; }
+            .hero-gradient h1 { font-size: 3.5rem; }
         }
 
         /* MODALS */
@@ -182,7 +242,6 @@
             margin-bottom: 0.75rem;
             min-height: 80px;
         }
-        .selection-card:active { transform: scale(0.98); }
         .selection-card.selected { border-color: #22c55e; background: rgba(34, 197, 94, 0.1); }
 
         #success-overlay {
@@ -197,11 +256,6 @@
             padding: 2rem;
             text-align: center;
         }
-
-        @media (max-width: 640px) {
-            .responsive-grid { grid-template-columns: 1fr; }
-            .hero-gradient h1 { font-size: 3rem; }
-        }
     </style>
 </head>
 <body>
@@ -215,23 +269,23 @@
                     </div>
                     <span class="font-bold text-sm sm:text-lg uppercase tracking-widest">Paws & Paths</span>
                 </a>
-                <button onclick="document.getElementById('subscriptions').scrollIntoView()" class="bg-white text-black px-4 sm:px-6 py-2 rounded-full font-bold text-[10px] uppercase tracking-widest hover:bg-green-500 hover:text-white transition-colors">Plans</button>
+                <button onclick="document.getElementById('subscriptions').scrollIntoView()" class="bg-white text-black px-4 sm:px-6 py-2 rounded-full font-bold text-[10px] uppercase tracking-widest hover:bg-green-500 hover:text-white transition-colors">View Plans</button>
             </div>
         </div>
     </nav>
 
-    <header id="home" class="hero-gradient min-h-[50vh] flex items-center pt-20">
-        <div class="max-w-7xl mx-auto px-6 sm:px-12 w-full">
-            <h1 class="text-5xl sm:text-7xl font-extrabold tracking-tighter mb-4 leading-none">Adventure <br><span class="text-green-500">Awaits.</span></h1>
-            <p class="text-slate-400 max-w-md text-sm sm:text-base">Professional walking services for the refined Stroud canine. Safety-certified care with premium pupdates.</p>
+    <header id="home" class="hero-gradient min-h-[60vh] flex items-center pt-20">
+        <div class="max-w-7xl mx-auto px-6 sm:px-12 w-full text-center">
+            <h1 class="text-6xl sm:text-8xl font-extrabold tracking-tighter mb-4 leading-tight">Adventure <br><span class="text-green-500">Awaits.</span></h1>
+            <p class="text-slate-400 max-w-xl mx-auto text-sm sm:text-lg">Professional walking services for the refined Stroud canine. Safety-certified care with premium video pupdates.</p>
         </div>
     </header>
 
     <section id="subscriptions" class="py-12 sm:py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6">
-            <div class="flex flex-col sm:flex-row justify-center mb-10 sm:mb-16 gap-3">
-                <button onclick="showTab('walks')" id="btn-walks" class="flex-1 sm:flex-none px-8 py-4 bg-slate-900 rounded-xl font-bold text-[10px] uppercase tracking-widest border border-white/5 transition-all">Service Plans</button>
-                <button onclick="showTab('addons')" id="btn-addons" class="flex-1 sm:flex-none px-8 py-4 bg-slate-900 rounded-xl font-bold text-[10px] uppercase tracking-widest border border-white/5 transition-all">Premium Add-ons</button>
+        <div class="max-w-7xl mx-auto px-4 sm:px-12">
+            <div class="flex flex-col sm:flex-row justify-center mb-10 sm:mb-16 gap-3 max-w-md mx-auto">
+                <button onclick="showTab('walks')" id="btn-walks" class="flex-1 px-8 py-4 bg-slate-900 rounded-xl font-bold text-[10px] uppercase tracking-widest border border-white/5 transition-all">Service Plans</button>
+                <button onclick="showTab('addons')" id="btn-addons" class="flex-1 px-8 py-4 bg-slate-900 rounded-xl font-bold text-[10px] uppercase tracking-widest border border-white/5 transition-all">Add-ons</button>
             </div>
 
             <div id="walks-tab" class="tab-content">
@@ -272,14 +326,14 @@
             </div>
             <div class="modal-footer">
                 <button onclick="goToCheckout()" class="w-full bg-white text-black py-4 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-green-500 hover:text-white">Continue to Checkout</button>
-                <button onclick="goToCheckout()" class="text-slate-500 font-bold text-[10px] uppercase py-2 hover:text-white transition-colors text-center">Skip to Checkout</button>
+                <button onclick="goToCheckout()" class="text-slate-500 font-bold text-[10px] uppercase py-2 hover:text-white transition-colors text-center">Skip</button>
             </div>
         </div>
     </div>
 
     <!-- STEP 3: CHECKOUT -->
     <div id="payment-modal" class="modal-overlay">
-        <div class="bg-slate-900 p-6 sm:p-10 rounded-[2rem] w-full max-w-sm text-center border border-white/10 mx-auto shadow-2xl">
+        <div class="bg-slate-900 p-8 rounded-[2rem] w-full max-w-sm text-center border border-white/10 mx-auto shadow-2xl">
             <h3 class="text-2xl font-bold mb-1">Finalise Order</h3>
             <p id="checkout-display-name" class="text-green-500 font-black text-[10px] uppercase tracking-widest mb-4"></p>
             <div class="text-5xl font-black mb-1 tracking-tighter" id="checkout-amount"></div>
@@ -305,28 +359,28 @@
         <canvas id="confetti-canvas"></canvas>
         <div class="relative z-10">
             <h2 class="text-white text-6xl sm:text-8xl font-black tracking-tighter italic drop-shadow-2xl">BOOKED!</h2>
-            <p class="text-white/90 font-bold uppercase tracking-[0.4em] text-[10px] sm:text-xs mt-6 border-t border-white/20 pt-4">Your adventure starts soon.</p>
+            <p class="text-white/90 font-bold uppercase tracking-[0.4em] text-[10px] sm:text-xs mt-6 border-t border-white/20 pt-4">Adventure starts soon.</p>
         </div>
     </div>
 
     <script>
         const inventory = {
             walks: [
-                { id: 'p-1', icon: 'fas fa-baby-carriage', name: 'Junior Explorer', price: 15, color: 'text-blue-400', desc: 'Short, gentle socialization walks for puppies under 6 months.', stock: 4 },
-                { id: 'p-2', icon: 'fas fa-tree', name: 'Meadow Wander', price: 25, color: 'text-green-400', desc: 'The classic 60-minute nature walk through Stroud\'s commons.', stock: 8 },
-                { id: 'p-3', icon: 'fas fa-users', name: 'Pack Hike', price: 35, color: 'text-pink-400', desc: 'High-energy social group adventure for friendly dogs.', stock: 6 },
-                { id: 'p-4', icon: 'fas fa-history', name: 'Golden Stroll', price: 40, color: 'text-orange-400', desc: 'Paced perfectly for senior dogs needing extra comfort.', stock: 5 },
-                { id: 'p-5', icon: 'fas fa-mountain', name: 'Elite Endurance', price: 55, color: 'text-red-400', desc: '2-hour vigorous mountain trekking for working breeds.', stock: 3 },
-                { id: 'p-6', icon: 'fas fa-star', name: 'Top Dog Elite', price: 65, color: 'text-yellow-400', desc: 'Solo walk with full GPS tracking and premium hydration.', stock: 3 },
-                { id: 'p-7', icon: 'fas fa-calendar-alt', name: 'Weekend Warrior', price: 75, color: 'text-purple-400', desc: 'Priority Saturday/Sunday sessions for busy owners.', stock: 2 },
-                { id: 'p-8', icon: 'fas fa-home', name: 'Home Sweet Home', price: 85, color: 'text-indigo-400', desc: 'Walking plus 30 mins of post-walk play and feeding.', stock: 4 },
-                { id: 'p-9', icon: 'fas fa-crown', name: 'Diamond Mogul', price: 110, color: 'text-yellow-500', desc: 'Unlimited priority walks with all premium extras included.', stock: 2, isDiamond: true }
+                { id: 'p-1', icon: 'fas fa-baby-carriage', name: 'Junior Explorer', price: 15, color: 'text-blue-400', desc: 'Short, gentle socialization walks for puppies under 6 months.', stock: 4, anim: 'anim-bounce' },
+                { id: 'p-2', icon: 'fas fa-tree', name: 'Meadow Wander', price: 25, color: 'text-green-400', desc: 'The classic 60-minute nature walk through Stroud\'s commons.', stock: 8, anim: 'anim-sway' },
+                { id: 'p-3', icon: 'fas fa-users', name: 'Pack Hike', price: 35, color: 'text-pink-400', desc: 'High-energy social group adventure for friendly dogs.', stock: 6, anim: 'anim-shake' },
+                { id: 'p-4', icon: 'fas fa-history', name: 'Golden Stroll', price: 40, color: 'text-orange-400', desc: 'Paced perfectly for senior dogs needing extra comfort.', stock: 5, anim: 'anim-pulse' },
+                { id: 'p-9', icon: 'fas fa-crown', name: 'Diamond Mogul', price: 110, color: 'text-yellow-500', desc: 'Unlimited priority walks with all premium extras included.', stock: 2, isDiamond: true, anim: 'anim-crown' },
+                { id: 'p-5', icon: 'fas fa-volleyball-ball', name: 'Backyard Buddy', price: 20, color: 'text-red-400', desc: '30 mins of fetch and garden games. Great for high-energy pups!', stock: 5, anim: 'anim-bounce' },
+                { id: 'p-6', icon: 'fas fa-star', name: 'Top Dog Elite', price: 65, color: 'text-yellow-400', desc: 'Solo walk with full GPS tracking and premium hydration.', stock: 3, anim: 'anim-spin' },
+                { id: 'p-7', icon: 'fas fa-calendar-alt', name: 'Weekend Warrior', price: 75, color: 'text-purple-400', desc: 'Priority Saturday/Sunday sessions for busy owners.', stock: 2, anim: 'anim-pulse' },
+                { id: 'p-8', icon: 'fas fa-home', name: 'Home Sweet Home', price: 85, color: 'text-indigo-400', desc: 'Walking plus 30 mins of post-walk play and feeding.', stock: 4, anim: 'anim-sway' }
             ],
             addons: [
-                { id: 'a-1', icon: 'fas fa-video', name: 'Cinema Pupdate', price: 5, color: 'text-blue-400', desc: 'HD video highlights sent to your phone.' },
-                { id: 'a-2', icon: 'fas fa-shower', name: 'Fresh-Paw Finish', price: 8, color: 'text-cyan-400', desc: 'Full wash & dry service after the walk.' },
-                { id: 'a-3', icon: 'fas fa-cookie-bite', name: 'Bark-ery Box', price: 5, color: 'text-pink-300', desc: 'A box of fresh, organic local treats.' },
-                { id: 'a-4', icon: 'fas fa-location-crosshairs', name: 'Live GPS Ping', price: 7, color: 'text-red-400', desc: 'Watch your dog\'s route in real-time.' }
+                { id: 'a-1', icon: 'fas fa-video', name: 'Cinema Pupdate', price: 5, color: 'text-blue-400', desc: 'HD video highlights sent to your phone.', anim: 'anim-spin' },
+                { id: 'a-2', icon: 'fas fa-shower', name: 'Fresh-Paw Finish', price: 8, color: 'text-cyan-400', desc: 'Full wash & dry service after the walk.', anim: 'anim-bounce' },
+                { id: 'a-3', icon: 'fas fa-cookie-bite', name: 'Bark-ery Box', price: 5, color: 'text-pink-300', desc: 'A box of fresh, organic local treats.', anim: 'anim-pulse' },
+                { id: 'a-4', icon: 'fas fa-location-crosshairs', name: 'Live GPS Ping', price: 7, color: 'text-red-400', desc: 'Watch your dog\'s route in real-time.', anim: 'anim-shake' }
             ],
             routes: [
                 { id: 'r-1', name: 'Rodborough Common', note: 'Views & Cows', color: 'text-orange-400' },
@@ -338,6 +392,7 @@
 
         let currentSelection = { main: null, addons: [], route: null };
 
+        // Simple confetti system
         class ConfettiParticle {
             constructor(canvas) {
                 this.canvas = canvas;
@@ -382,14 +437,22 @@
             const canvas = document.getElementById('confetti-canvas');
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            particles = Array.from({ length: 100 }, () => new ConfettiParticle(canvas));
+            particles = Array.from({ length: 120 }, () => new ConfettiParticle(canvas));
             function loop() {
                 const ctx = canvas.getContext('2d');
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                particles.forEach(p => { p.update(); p.draw(); });
+                particles.forEach(p => { if(!p.update()) p.reset(); p.draw(); });
                 animationFrame = requestAnimationFrame(loop);
             }
             loop();
+        }
+
+        function triggerIconAnimation(element, animClass) {
+            const icon = element.querySelector('.icon-base, .massive-crown-right');
+            if (!icon) return;
+            icon.classList.remove('anim-bounce', 'anim-sway', 'anim-spin', 'anim-shake', 'anim-pulse', 'anim-crown');
+            void icon.offsetWidth;
+            icon.classList.add(animClass);
         }
 
         function renderSection(category, gridId) {
@@ -397,23 +460,22 @@
             grid.innerHTML = '';
             inventory[category].forEach(item => {
                 const card = document.createElement('div');
-                card.className = `premium-card ${item.isDiamond ? 'diamond-mogul-card' : ''}`;
-                
+                card.className = `premium-card group ${item.isDiamond ? 'diamond-mogul-card' : ''}`;
+                card.onclick = (e) => triggerIconAnimation(card, item.anim);
                 let iconHtml = item.isDiamond ? `<i class="fas fa-crown massive-crown-right"></i>` : `<i class="${item.icon} icon-base ${item.color}"></i>`;
-                
                 card.innerHTML = `
-                    <div class="fancy-icon-container">${iconHtml}</div>
-                    <div class="card-content-offset flex flex-col h-full">
+                    <div class="fancy-icon-container" onclick="event.stopPropagation(); triggerIconAnimation(this.parentElement, '${item.anim}')">${iconHtml}</div>
+                    <div class="card-content-offset flex flex-col h-full pointer-events-none">
                         <span class="availability-badge ${item.stock <= 3 ? 'bg-red-500/20 text-red-500' : 'bg-green-500/20 text-green-500'}">
                             ${category === 'walks' ? (item.stock + ' Slots Left') : 'Available Now'}
                         </span>
                         <h3 class="card-title">${item.name}</h3>
                         <div class="card-price">${item.price}</div>
                         <p class="card-desc">${item.desc}</p>
-                        <button onclick="bookPlan('${item.id}', '${category}')" class="card-btn ${item.isDiamond ? 'bg-yellow-500 text-black' : 'bg-slate-800 text-white'}">
-                            Select ${category === 'walks' ? 'Plan' : 'Add-on'}
-                        </button>
                     </div>
+                    <button onclick="event.stopPropagation(); bookPlan('${item.id}', '${category}')" class="card-btn pointer-events-auto ${item.isDiamond ? 'bg-yellow-500 text-black' : 'bg-slate-800 text-white'}">
+                        Select ${category === 'walks' ? 'Plan' : 'Add-on'}
+                    </button>
                 `;
                 grid.appendChild(card);
             });
@@ -425,7 +487,6 @@
             currentSelection.main = item;
             currentSelection.addons = []; 
             currentSelection.route = null;
-            
             if (category === 'walks') {
                 prepareRouteModal();
                 document.getElementById('route-selection-modal').style.display = 'flex';
@@ -486,7 +547,7 @@
                             <div class="text-[9px] text-slate-500 uppercase font-bold leading-none">${isDiamond ? 'Included' : '£' + addon.price}</div>
                         </div>
                     </div>
-                    <div class="check-icon"><i class="fas fa-check text-green-500 opacity-0"></i></div>
+                    <div class="check-icon"><i class="fas fa-check text-green-500 opacity-0 transition-opacity"></i></div>
                 `;
                 listContainer.appendChild(card);
             });
