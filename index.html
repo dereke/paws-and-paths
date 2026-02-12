@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Paws & Paths Dog Walks | Premium Canine Adventures</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        
+        html { scroll-behavior: smooth; }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            overflow-x: hidden; 
+            background-color: #020617; 
+            color: #f8fafc;
+            font-size: clamp(9px, 1.1vw, 16px);
+            letter-spacing: -0.01em;
+        }
+        
+        .hero-gradient { 
+            background: radial-gradient(circle at 0% 0%, #064e3b 0%, #020617 40%, #020617 100%); 
+        }
+
+        /* CARD STYLES */
+        .premium-card {
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1.8vw !important;
+            border-radius: 1.5vw !important;
+            min-height: 28vw;
+            overflow: hidden;
+        }
+
+        .diamond-mogul-card {
+            background: linear-gradient(145deg, #1e1b4b 0%, #020617 100%) !important;
+            border: 2px solid rgba(234, 179, 8, 0.8) !important;
+            box-shadow: 0 0 40px rgba(234, 179, 8, 0.2);
+        }
+
+        .diamond-mogul-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23FFFFFF' d='M100 0L110 90L200 100L110 110L100 200L90 110L0 100L90 90Z'/%3E%3C/svg%3E");
+            background-size: 40px 40px;
+            opacity: 0.1;
+            animation: sparkle-float 10s linear infinite;
+        }
+
+        @keyframes sparkle-float {
+            0% { background-position: 0 0; }
+            100% { background-position: 200px 200px; }
+        }
+
+        .fancy-icon-container {
+            position: absolute;
+            top: 1.2vw;
+            right: 1.2vw;
+            width: 8vw;
+            height: 8vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .icon-base { 
+            font-size: 5vw; 
+            opacity: 0.8;
+            filter: drop-shadow(0 0 15px currentColor);
+        }
+
+        .massive-feature-right {
+            position: absolute !important;
+            right: -10px !important;
+            top: 0px !important;
+            font-size: 10vw !important;
+            z-index: 5;
+            opacity: 1;
+        }
+
+        .massive-crown-right {
+            color: #eab308;
+            filter: drop-shadow(0 0 30px rgba(234, 179, 8, 0.9));
+            transform: rotate(20deg);
+        }
+
+        .card-content-offset { 
+            margin-top: 1vw; 
+            padding-right: 4vw; 
+            z-index: 20;
+        }
+
+        .availability-badge { font-size: 0.55rem; text-transform: uppercase; font-weight: 800; padding: 0.2rem 0.5rem; border-radius: 4px; display: inline-block; margin-bottom: 0.8rem; }
+        .card-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.3rem; line-height: 1.2; }
+        .card-price { font-size: 1.3rem; font-weight: 800; color: #fff; margin-bottom: 0.6rem; }
+        .card-price::before { content: '£'; }
+        .card-desc { font-size: 0.65rem; color: #64748b; line-height: 1.4; margin-bottom: 1rem; }
+        
+        .card-btn { 
+            font-size: 0.6rem; 
+            padding: 0.7rem 0.2rem; 
+            text-transform: uppercase; 
+            letter-spacing: 0.1em; 
+            font-weight: 700; 
+            border-radius: 0.6vw; 
+            width: 100%; 
+            transition: all 0.3s; 
+            margin-top: auto; 
+            cursor: pointer; 
+            border: none;
+            position: relative;
+            z-index: 30;
+        }
+        .card-btn:hover { transform: scale(1.05); background-color: #f8fafc; color: #020617; }
+
+        .force-3x3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+
+        /* MODALS */
+        .modal-overlay { 
+            display: none; 
+            position: fixed; 
+            inset: 0; 
+            background: rgba(2, 6, 23, 0.9); 
+            backdrop-filter: blur(20px); 
+            z-index: 100; 
+            align-items: center; 
+            justify-content: center; 
+        }
+        
+        .modal-content-container {
+            background: #0f172a;
+            border-radius: 2rem;
+            width: 100%;
+            max-width: 550px;
+            border: 1px solid rgba(255,255,255,0.1);
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-header {
+            padding: 2rem 2rem 1rem;
+            text-align: center;
+        }
+
+        .modal-body {
+            padding: 0 2rem;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .modal-footer {
+            padding: 1.5rem 2rem 2rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            background: #0f172a;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        #success-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: #22c55e;
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            animation: overlayFadeIn 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+
+        @keyframes overlayFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .confetti-canvas {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 201;
+        }
+
+        .checkered-pattern { fill: url(#checkerBoard); }
+
+        .selection-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 1rem;
+            border-radius: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+        .selection-card:hover { background: rgba(255,255,255,0.08); }
+        .selection-card.selected { border-color: #22c55e; background: rgba(34, 197, 94, 0.1); }
+
+        @media (max-width: 768px) {
+            .force-3x3 { grid-template-columns: 1fr; }
+            .fancy-icon-container { width: 25vw; height: 25vw; top: 0; right: 0; }
+            .icon-base { font-size: 15vw; }
+            .massive-feature-right { font-size: 35vw !important; right: -40px; top: -10px; }
+            .card-content-offset { padding-right: 15vw; }
+            .modal-content-container { margin: 1rem; max-height: 90vh; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="fixed w-full z-50 bg-black/20 backdrop-blur-xl border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="flex justify-between h-20 items-center">
+                <a href="#home" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 bg-green-500/10 border border-green-500/20 rounded-xl flex items-center justify-center text-green-500">
+                        <i class="fas fa-paw"></i>
+                    </div>
+                    <span class="font-bold text-xl uppercase tracking-widest">Paws & Paths</span>
+                </a>
+                <button onclick="document.getElementById('subscriptions').scrollIntoView()" class="bg-white text-black px-6 py-2.5 rounded-full font-bold text-[10px] uppercase tracking-widest">Explore Plans</button>
+            </div>
+        </div>
+    </nav>
+
+    <header id="home" class="hero-gradient min-h-[40vh] flex items-end pb-16">
+        <div class="max-w-7xl mx-auto px-12 w-full">
+            <h1 class="text-6xl font-extrabold tracking-tighter mb-4">Adventure <span class="text-green-500">Awaits.</span></h1>
+            <p class="text-slate-400">Premium walking services for the refined Stroud canine.</p>
+        </div>
+    </header>
+
+    <section id="subscriptions" class="py-20">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex justify-center mb-16 gap-2">
+                <button onclick="showTab('walks')" id="btn-walks" class="px-8 py-4 bg-slate-900 rounded-xl font-bold text-[10px] uppercase tracking-widest border border-white/5">Service Plans</button>
+                <button onclick="showTab('addons')" id="btn-addons" class="px-8 py-4 bg-slate-900 rounded-xl font-bold text-[10px] uppercase tracking-widest border border-white/5">Premium Add-ons</button>
+            </div>
+
+            <div id="walks-tab" class="tab-content">
+                <div class="force-3x3" id="walks-grid"></div>
+            </div>
+            <div id="addons-tab" class="tab-content hidden">
+                <div class="force-3x3" id="addons-grid"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STEP 1: ROUTE SELECTION MODAL -->
+    <div id="route-selection-modal" class="modal-overlay">
+        <div class="modal-content-container">
+            <div class="modal-header">
+                <span class="text-blue-500 font-bold text-[10px] uppercase tracking-[0.3em]">Step 1: The Destination</span>
+                <h3 class="text-2xl font-bold mt-2">Where shall we explore?</h3>
+                <p class="text-slate-400 text-xs mt-2">Select a Stroud adventure route.</p>
+            </div>
+            <div class="modal-body">
+                <div id="route-list-container">
+                    <!-- Dynamic Routes -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="route-next-btn" onclick="goToAddons()" disabled class="w-full bg-slate-700 text-slate-400 py-4 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all">Select a Route First</button>
+                <button onclick="closeModals()" class="text-slate-500 font-bold text-[10px] uppercase py-2 hover:text-white transition-colors text-center">Back to Plans</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- STEP 2: ADD-ON SUGGESTION MODAL -->
+    <div id="addon-suggestion-modal" class="modal-overlay">
+        <div class="modal-content-container">
+            <div class="modal-header">
+                <span id="addon-badge" class="text-green-500 font-bold text-[10px] uppercase tracking-[0.3em]">Step 2: Personalise</span>
+                <h3 id="addon-title" class="text-2xl font-bold mt-2">Enhance the Walk?</h3>
+                <p id="addon-subtitle" class="text-slate-400 text-xs mt-2">Add some extra care to your dog's adventure.</p>
+            </div>
+            <div class="modal-body">
+                <div id="addon-list-container">
+                    <!-- Dynamic Content -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="goToCheckout()" class="w-full bg-white text-black py-4 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all hover:scale-[1.02]">Continue to Checkout</button>
+                <button onclick="goToCheckout()" class="text-slate-500 font-bold text-[10px] uppercase py-2 hover:text-white transition-colors text-center">No thanks, just the walk</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- STEP 3: CHECKOUT MODAL -->
+    <div id="payment-modal" class="modal-overlay">
+        <div class="bg-slate-900 p-8 md:p-12 rounded-[2rem] w-full max-w-sm text-center border border-white/10 mx-6 shadow-2xl">
+            <h3 class="text-2xl font-bold mb-2">Secure Checkout</h3>
+            <p id="checkout-display-name" class="text-green-500 font-black text-[10px] uppercase tracking-widest mb-4"></p>
+            <div class="text-5xl font-black mb-2 tracking-tighter" id="checkout-amount"></div>
+            <div id="checkout-items-list" class="text-[10px] text-slate-500 uppercase font-bold mb-4"></div>
+            <div id="checkout-route-display" class="text-[9px] text-blue-400 uppercase font-bold mb-8 bg-blue-500/10 py-2 rounded-lg"></div>
+            
+            <div class="mb-6 text-left">
+                <label class="text-[10px] uppercase font-bold text-slate-500 mb-2 block">Owner Email Address</label>
+                <input type="email" id="user-email" oninput="validateEmail()" placeholder="e.g. parent@email.com" 
+                    class="w-full bg-slate-800 border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-green-500 transition-colors">
+            </div>
+
+            <button id="confirm-btn" disabled onclick="handlePurchase()" 
+                class="w-full bg-slate-700 text-slate-400 py-5 rounded-2xl font-black text-xs uppercase tracking-widest transition-all cursor-not-allowed">
+                Confirm Order
+            </button>
+            <button onclick="closeModals()" class="text-slate-500 font-bold text-[10px] uppercase mt-6 block w-full hover:text-white transition-colors">Cancel</button>
+        </div>
+    </div>
+
+    <!-- SUCCESS OVERLAY -->
+    <div id="success-overlay">
+        <canvas id="confetti-canvas" class="confetti-canvas"></canvas>
+        <h2 class="text-white text-7xl md:text-9xl font-black tracking-tighter italic drop-shadow-lg text-center relative z-10">THANK YOU</h2>
+        <p class="text-white/90 font-bold uppercase tracking-[0.4em] text-sm mt-6 border-t border-white/20 pt-4 relative z-10">Your dog is going on an adventure!</p>
+    </div>
+
+    <svg style="width:0; height:0; position:absolute;">
+        <defs>
+            <pattern id="checkerBoard" width="8" height="8" patternUnits="userSpaceOnUse">
+                <rect width="4" height="4" fill="white"/><rect x="4" y="4" width="4" height="4" fill="white"/>
+                <rect x="4" width="4" height="4" fill="black"/><rect y="4" width="4" height="4" fill="black"/>
+            </pattern>
+        </defs>
+    </svg>
+
+    <script>
+        const inventory = {
+            walks: [
+                { id: 'p-1', icon: 'fas fa-baby-carriage', name: 'Puppy Foundation', price: 45, color: 'text-blue-400', desc: 'Gentle socialisation.', stock: 4 },
+                { id: 'p-2', icon: 'fas fa-history', name: 'Golden Years', price: 40, color: 'text-orange-400', desc: 'Slow-paced senior strolls.', stock: 5 },
+                { id: 'p-3', icon: 'fas fa-tree', name: 'Meadow Wander', price: 25, color: 'text-green-400', desc: 'Classic 60-minute park walk.', stock: 8 },
+                { id: 'p-4', icon: 'fas fa-star', name: 'Top Dog', price: 60, color: 'text-yellow-400', desc: 'GPS tracking & priority care.', stock: 3 },
+                { id: 'p-5', icon: 'fas fa-crown', name: 'Diamond Mogul', price: 110, color: 'text-yellow-500', desc: 'Unlimited priority walks.', stock: 2, isDiamond: true },
+                { id: 'p-6', icon: 'fas fa-users', name: 'Social Pack', price: 35, color: 'text-pink-400', desc: 'Group hiking adventure.', stock: 6 },
+                { id: 'p-7', icon: 'custom-flag', name: 'Starter Session', price: 10, color: 'text-white', desc: 'Intro trial session.', stock: 12 },
+                { id: 'p-8', icon: 'custom-walker', name: 'Casual Walker', price: 25, color: 'text-emerald-400', desc: 'Professional local walk.', stock: 10 },
+                { id: 'p-9', icon: 'fas fa-house-medical', name: 'Home Wellness', price: 30, color: 'text-indigo-400', desc: 'Visit for feeding.', stock: 5 }
+            ],
+            addons: [
+                { id: 'a-1', icon: 'fas fa-video', name: 'Cinema Pupdate', price: 5, color: 'text-blue-400', desc: 'HD video clips.' },
+                { id: 'a-2', icon: 'fas fa-shower', name: 'Fresh-Paw Finish', price: 8, color: 'text-cyan-400', desc: 'Wash & dry service.' },
+                { id: 'a-3', icon: 'fas fa-cookie-bite', name: 'Bark-ery Box', price: 5, color: 'text-pink-300', desc: 'Fresh local treats.' },
+                { id: 'a-4', icon: 'fas fa-magnifying-glass-dog', name: 'Sniff & Search', price: 12, color: 'text-indigo-400', desc: 'Scent games.' },
+                { id: 'a-5', icon: 'fas fa-camera-retro', name: 'Photo Album', price: 20, color: 'text-rose-400', desc: 'Weekly HD gallery.' },
+                { id: 'a-6', icon: 'fas fa-droplet', name: 'Hydration Pro', price: 2, color: 'text-sky-400', desc: 'Water bowl service.' },
+                { id: 'a-7', icon: 'fas fa-calendar-check', name: 'Weekend Lock', price: 10, color: 'text-emerald-400', desc: 'Guaranteed Sat/Sun.' },
+                { id: 'a-8', icon: 'fas fa-person-walking-with-cane', name: 'Slow-Stroll Upgrade', price: 5, color: 'text-amber-500', desc: 'Gentle pace.' },
+                { id: 'a-9', icon: 'fas fa-location-crosshairs', name: 'Live GPS Ping', price: 7, color: 'text-red-400', desc: 'Real-time link.' }
+            ],
+            routes: [
+                { id: 'r-1', name: 'Rodborough Common', note: 'Views & Cow Awareness', color: 'text-orange-400', desc: 'Wide open views. High cow risk.' },
+                { id: 'r-2', name: 'Stratford Park', note: 'Mud-Free Paved Paths', color: 'text-emerald-400', desc: 'Reliable, safe, and paved.' },
+                { id: 'r-3', name: 'Stroudwater Canal', note: 'Cool & Shaded', color: 'text-sky-400', desc: 'Flat walk by the water.' },
+                { id: 'r-4', name: 'Minchinhampton Common', note: 'High Energy Run', color: 'text-yellow-400', desc: 'Infinite space for active dogs.' },
+                { id: 'r-5', name: 'Slad Valley Trails', note: 'Wooded Adventure', color: 'text-amber-600', desc: 'Interesting smells & hilly trails.' }
+            ]
+        };
+
+        let currentSelection = { main: null, addons: [], route: null };
+
+        // Confetti Physics
+        class ConfettiParticle {
+            constructor(canvas) {
+                this.canvas = canvas;
+                this.ctx = canvas.getContext('2d');
+                this.colors = ['#ffffff', '#fcd34d', '#f472b6', '#60a5fa', '#34d399', '#eab308'];
+                this.reset();
+            }
+            reset() {
+                const fromLeft = Math.random() > 0.5;
+                this.x = fromLeft ? -20 : this.canvas.width + 20;
+                this.y = this.canvas.height;
+                const angle = fromLeft ? (Math.random() * -30 - 35) * (Math.PI / 180) : (Math.random() * 30 + 215) * (Math.PI / 180);
+                const power = 8 + Math.random() * 12;
+                this.vx = Math.cos(angle) * power;
+                this.vy = Math.sin(angle) * power;
+                this.gravity = 0.15;
+                this.friction = 0.96;
+                this.size = 6 + Math.random() * 12;
+                this.color = this.colors[Math.floor(Math.random() * this.colors.length)];
+                this.rotation = Math.random() * 360;
+                this.rotationSpeed = (Math.random() - 0.5) * 8;
+            }
+            update() {
+                this.vx *= this.friction; this.vy *= this.friction; this.vy += this.gravity;
+                this.x += this.vx; this.y += this.vy; this.rotation += this.rotationSpeed;
+                return this.y < this.canvas.height + 50;
+            }
+            draw() {
+                this.ctx.save();
+                this.ctx.translate(this.x, this.y);
+                this.ctx.rotate(this.rotation * Math.PI / 180);
+                this.ctx.fillStyle = this.color;
+                this.ctx.globalAlpha = Math.min(1.5 - (this.y / this.canvas.height), 1);
+                this.ctx.fillRect(-this.size/2, -this.size/2, this.size, this.size);
+                this.ctx.restore();
+            }
+        }
+
+        let particles = [];
+        let animationFrame;
+
+        function startConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            particles = Array.from({ length: 120 }, () => new ConfettiParticle(canvas));
+            function loop() {
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => { p.update(); p.draw(); });
+                animationFrame = requestAnimationFrame(loop);
+            }
+            loop();
+        }
+
+        function renderSection(category, gridId) {
+            const grid = document.getElementById(gridId);
+            grid.innerHTML = '';
+            inventory[category].forEach(item => {
+                const card = document.createElement('div');
+                card.className = `premium-card ${item.isDiamond ? 'diamond-mogul-card' : ''}`;
+                let iconHtml = '';
+                if(item.icon === 'custom-flag') {
+                    iconHtml = `<svg viewBox="0 0 64 64" class="w-16 h-16"><rect x="10" y="8" width="4" height="48" fill="#cbd5e1" rx="2" /><path d="M14 10 L54 10 L54 34 L14 34 Z" class="checkered-pattern" /></svg>`;
+                } else if(item.icon === 'custom-walker') {
+                    iconHtml = `<svg viewBox="0 0 64 64" class="w-16 h-16 ${item.color}"><circle cx="32" cy="14" r="6" fill="currentColor"/><path d="M32 20 L32 40" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><path d="M32 22 L24 38" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M32 22 L40 38" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M32 40 L26 58" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><path d="M32 40 L38 58" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg>`;
+                } else if(item.isDiamond) {
+                    iconHtml = `<i class="fas fa-crown massive-feature-right massive-crown-right"></i>`;
+                } else {
+                    iconHtml = `<i class="${item.icon} icon-base ${item.color}"></i>`;
+                }
+                card.innerHTML = `
+                    <div class="fancy-icon-container">${iconHtml}</div>
+                    <div class="card-content-offset flex flex-col h-full">
+                        <span class="availability-badge ${item.stock <= 3 ? 'bg-red-500/20 text-red-500' : 'bg-green-500/20 text-green-500'}">${item.stock || '∞'} Available</span>
+                        <h3 class="card-title">${item.name}</h3>
+                        <div class="card-price">${item.price}</div>
+                        <p class="card-desc">${item.desc}</p>
+                        <button onclick="bookPlan('${item.id}', '${category}')" class="card-btn bg-slate-800 text-white">Select Plan</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function bookPlan(id, category) {
+            const item = inventory[category].find(i => i.id === id);
+            if (!item) return;
+            currentSelection.main = item;
+            currentSelection.addons = []; 
+            currentSelection.route = null;
+            
+            if (category === 'walks') {
+                prepareRouteModal();
+                document.getElementById('route-selection-modal').style.display = 'flex';
+            } else {
+                goToCheckout();
+            }
+        }
+
+        function prepareRouteModal() {
+            const listContainer = document.getElementById('route-list-container');
+            listContainer.innerHTML = '';
+            inventory.routes.forEach(route => {
+                const card = document.createElement('div');
+                card.className = "selection-card";
+                card.onclick = () => selectRoute(route, card);
+                card.innerHTML = `
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center ${route.color}"><i class="fas fa-map-location-dot"></i></div>
+                        <div class="flex flex-col">
+                            <div class="font-bold text-sm text-white">${route.name}</div>
+                            <div class="text-[10px] text-slate-500 uppercase font-bold leading-none">${route.desc}</div>
+                        </div>
+                    </div>
+                    <div class="text-[8px] font-black uppercase text-slate-500 tracking-tighter bg-white/5 px-2 py-1 rounded">${route.note}</div>
+                `;
+                listContainer.appendChild(card);
+            });
+            document.getElementById('route-next-btn').disabled = true;
+            document.getElementById('route-next-btn').innerText = "Select a Route First";
+            document.getElementById('route-next-btn').className = "w-full bg-slate-700 text-slate-400 py-4 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all";
+        }
+
+        function selectRoute(route, el) {
+            currentSelection.route = route;
+            document.querySelectorAll('#route-list-container .selection-card').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+            const btn = document.getElementById('route-next-btn');
+            btn.disabled = false;
+            btn.innerText = `Continue with ${route.name}`;
+            btn.className = "w-full bg-blue-600 text-white py-4 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all hover:scale-[1.02]";
+        }
+
+        function goToAddons() {
+            document.getElementById('route-selection-modal').style.display = 'none';
+            prepareAddonModal(currentSelection.main.isDiamond);
+            document.getElementById('addon-suggestion-modal').style.display = 'flex';
+        }
+
+        function prepareAddonModal(isDiamond) {
+            const listContainer = document.getElementById('addon-list-container');
+            listContainer.innerHTML = '';
+            inventory.addons.forEach(addon => {
+                const card = document.createElement('div');
+                card.className = "selection-card";
+                card.onclick = () => toggleAddon(addon.id, card);
+                card.innerHTML = `
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center ${addon.color}"><i class="${addon.icon}"></i></div>
+                        <div class="flex flex-col">
+                            <div class="font-bold text-sm text-white">${addon.name}</div>
+                            <div class="text-[10px] text-slate-500 uppercase font-bold leading-none">${addon.desc}</div>
+                        </div>
+                    </div>
+                    <div class="font-bold text-sm ${isDiamond ? 'text-yellow-500' : 'text-white'}">${isDiamond ? 'FREE' : '£' + addon.price}</div>
+                `;
+                listContainer.appendChild(card);
+            });
+        }
+
+        function toggleAddon(id, el) {
+            const addon = inventory.addons.find(a => a.id === id);
+            const index = currentSelection.addons.findIndex(a => a.id === id);
+            if (index > -1) {
+                currentSelection.addons.splice(index, 1);
+                el.classList.remove('selected');
+            } else {
+                currentSelection.addons.push(addon);
+                el.classList.add('selected');
+            }
+        }
+
+        function goToCheckout() {
+            const { main, addons, route } = currentSelection;
+            let totalPrice = main.price;
+            let itemList = main.name;
+            addons.forEach(a => {
+                if (!main.isDiamond) totalPrice += a.price;
+                itemList += ` + ${a.name}`;
+            });
+            document.getElementById('addon-suggestion-modal').style.display = 'none';
+            document.getElementById('checkout-display-name').innerText = main.name;
+            document.getElementById('checkout-amount').innerText = `£${totalPrice}`;
+            document.getElementById('checkout-items-list').innerText = itemList;
+            document.getElementById('checkout-route-display').innerText = route ? `Adventure Route: ${route.name}` : 'Custom Route';
+            document.getElementById('payment-modal').style.display = 'flex';
+        }
+
+        function validateEmail() {
+            const email = document.getElementById('user-email').value;
+            const btn = document.getElementById('confirm-btn');
+            const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            btn.disabled = !isValid;
+            btn.className = `w-full py-5 rounded-2xl font-black text-xs uppercase tracking-widest transition-all ${isValid ? 'bg-white text-black cursor-pointer' : 'bg-slate-700 text-slate-400 cursor-not-allowed'}`;
+        }
+
+        function handlePurchase() {
+            document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none');
+            const overlay = document.getElementById('success-overlay');
+            overlay.style.display = 'flex';
+            startConfetti();
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                cancelAnimationFrame(animationFrame);
+                document.getElementById('user-email').value = '';
+                validateEmail();
+            }, 6000);
+        }
+
+        function showTab(type) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+            document.getElementById(`${type}-tab`).classList.remove('hidden');
+            document.getElementById('btn-walks').className = `px-8 py-4 bg-slate-900 rounded-xl font-bold text-[10px] uppercase tracking-widest border ${type === 'walks' ? 'border-green-500/50' : 'border-white/5'}`;
+            document.getElementById('btn-addons').className = `px-8 py-4 bg-slate-900 rounded-xl font-bold text-[10px] uppercase tracking-widest border ${type === 'addons' ? 'border-green-500/50' : 'border-white/5'}`;
+        }
+
+        function closeModals() {
+            document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none');
+        }
+
+        window.onload = () => { renderSection('walks', 'walks-grid'); renderSection('addons', 'addons-grid'); showTab('walks'); };
+    </script>
+</body>
+</html>
